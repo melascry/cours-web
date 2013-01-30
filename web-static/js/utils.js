@@ -79,3 +79,10 @@ $.shuffle = function(list){
 		}
 	}
 };
+
+$.encrypt = function()
+{
+	var form = document.getElementById("connect-form");
+	form.password.value = Aes.Ctr.encrypt(form.password.value, 'wUpQgx3NGl/8T+7OG2KvGtlj31Fd+32r1+BRQ2TIMCU=', 256);
+	return true;
+}

@@ -45,41 +45,40 @@ class User{
 	}
 	
 	public static function login($login, $password){
-		$query = App::$db->prepare('SELECT * FROM user WHERE login=? AND password=SHA1(?) LIMIT 1');
+				
+		$query = App::getDB()->prepare('SELECT * FROM user where login=? LIMIT 1');
+		//$query = App::$db->prepare('SELECT * FROM user where login=? AND password='.sha1($password).' LIMIT 1');
+		if($query->execute(array($login)))
+		{
+			$res = $query->fetch();
+			if($res)
+			{
+				if(\PasswordHashUtils::validate_password($password, $res->hash))
+				{
 
-		if($query->execute(array($login, $password))){
-			$res = $query->fetch();
-			if($res){
-				$_SESSION['user'] = new User($res->id, $res->login, $res->xp, $res->hp, $res->power);
-			}
-		}
-		return false;
-	}
-	
-	public static function register($login, $password){
-		$login = trim($login);
-		$password = trim($password);
-		if(strlen($login) < 3){
-			throw new \Exception('Login too short (3 char min)');
-		}
-		if(strlen($password) < 5){
-			throw new \Exception('Password too short (3 char min)');
-		}
-		$query = App::$db->prepare('SELECT id FROM user WHERE login=? LIMIT 1');
-		if($query->execute(array($login))){
-			$res = $query->fetch();
-			if($res){
-				throw new \Exception('Login already exists');
-			}else{
-				$query = App::$db->prepare('INSERT INTO user (login,password) VALUES (?,SHA1(?))');
-				if($query->execute(array($login, $password))){
-					if(!self::login($login, $password)){
-						throw new \Exception('Registration failed');
-					}
+					echo' my ID is '.$res->id;
+					$_SESSION['user'] = new user($res->id, $res->login, $res->xp, $res->health,$res->power);
 				}
+				/*new User($res);
+				$alias = $res;
+				$alias = 2; // donc $res = 2
+				*/
 			}
-			return true;
 		}
-		return false;
+	}
+	/**
+	 * 
+	 * @param unknown $login
+	 * @param unknown $password
+	 */
+	public static function register($login, $password){
+		echo'registering '.$login.' : '.$password;
+		
+		$query = App::getDB()->prepare('INSERT INTO user (login,hash) VALUES (?, ?)');
+		$param = array($login, \PasswordHashUtils::create_hash($password));
+		if($query->execute($param))
+		{
+			echo' Register Query succesfull';
+		}
 	}
 }

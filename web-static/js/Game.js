@@ -30,6 +30,10 @@ var Game = function(){
 	}));
 	$(win.root).hide();
 	
+	$("#gui").append($("<div>").button().append("Logout").click(function(){
+		location.href = "?logout";
+	}));
+	
 	player = new Player(scene);
 	camera = new Camera(scene, player);
 
