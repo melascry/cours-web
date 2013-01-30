@@ -1,4 +1,9 @@
 <?php
-include('../app/config.php');
+include_once('../app/config.php');
 
-include('../app/templates/index.html');
+//coursWeb\test\Test::test();
+
+coursWeb\App::handleConnectionForm();
+include TEMPLATES_PATH.'connect.tpl';
+
+//phpinfo();
