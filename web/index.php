@@ -1,4 +1,16 @@
 <?php
-include('../app/config.php');
+include_once('../app/config.php');
 
-include('../app/templates/index.html');
+//coursWeb\test\Test::test();
+
+
+if(isset($_SESSION['user']))
+{
+	coursWeb\App::handleGameForm();
+	include TEMPLATES_PATH.'game.tpl';
+}
+else
+{
+	coursWeb\App::handleConnectionForm();
+	include TEMPLATES_PATH.'connect.tpl';
+}//phpinfo();

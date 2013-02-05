@@ -28,4 +28,6 @@ html, body{
 	margin-top: -300px;
 	font-family: gunship-condensed;
 	font-size: 9px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
