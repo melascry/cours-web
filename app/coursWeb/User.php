@@ -9,6 +9,8 @@ class User{
 	private $hp = 0;
 	private $power = 0;
 	
+	public $publicData = "ok";
+	
 	private function __construct($id, $login, $xp, $hp, $power){
 		$this->id = (int)$id;
 		$this->login = $login;
@@ -24,6 +26,8 @@ class User{
 			'xp' => $this->xp,
 			'hp' => $this->hp,
 			'power' => $this->power,
+			'test' => array(0, 2),
+			'thisTest' => $this
 		));
 	}
 	
@@ -45,42 +49,43 @@ class User{
 	}
 	
 	public static function login($login, $password){
-				
-		$query = App::getDB()->prepare('SELECT * FROM user where login=? LIMIT 1');
-		//$query = App::$db->prepare('SELECT * FROM user where login=? AND password='.sha1($password).' LIMIT 1');
-		if($query->execute(array($login)))
-		{
+		$query = App::getDB()->prepare('SELECT * FROM user WHERE login=? LIMIT 1');
+		if($query->execute(array($login))){
 			$res = $query->fetch();
-			if($res)
-			{
-				if(\PasswordHashUtils::validate_password($password, $res->hash))
-				{
-
-					echo' my ID is '.$res->id;
-					$_SESSION['user'] = new user($res->id, $res->login, $res->xp, $res->health,$res->power);
+			if($res){
+				if(\PasswordHashUtils::validate_password($password, $res->hash)){
+					$_SESSION['user'] = new User($res->id, $res->login, $res->xp, $res->hp, $res->power);
 					return true;
 				}
-				/*new User($res);
-				$alias = $res;
-				$alias = 2; // donc $res = 2
-				*/
 			}
 		}
 		return false;
 	}
+	
 	/**
-	 * 
+	 * Test
 	 * @param unknown $login
 	 * @param unknown $password
 	 */
 	public static function register($login, $password){
-		echo'registering '.$login.' : '.$password;
-		
-		$query = App::getDB()->prepare('INSERT INTO user (login,hash) VALUES (?, ?)');
-		$param = array($login, \PasswordHashUtils::create_hash($password));
-		if($query->execute($param))
-		{
-			echo' Register Query succesfull';
+		if(strlen($password) < 5){
+			throw new \Exception('Password too short (3 char min)');
 		}
+		$query = App::getDB()->prepare('SELECT id FROM user WHERE login=? LIMIT 1');
+		if($query->execute(array($login))){
+			$res = $query->fetch();
+			if($res){
+				throw new \Exception('Login already exists');
+			}else{
+				$query = App::getDB()->prepare('INSERT INTO user (login,hash) VALUES (?,?)');
+				if($query->execute(array($login, \PasswordHashUtils::create_hash($password)))){
+					if(!self::login($login, $password)){
+						throw new \Exception('Registration failed');
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }

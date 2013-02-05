@@ -28,20 +28,20 @@ InfoPage.prototype = new Page();
 
 InfoPage.prototype.refreshData = function(playerData){
 	for(var i in playerData){
-		var value = playerData[i];
 		switch(i){
-			case "login": this.playerName.html(value);
-				break;
-			case "title": this.playerTitle.html(value);
-				break;
-			case "xp": this.attributeList["xp"].html(value);
-				break;
-			case "hp": this.attributeList["hp"].html(value);
-				break;
-			case "power": this.attributeList["power"].html(value);
-				break;
-			case "progress": this.playerProgressIndic.css("width", Math.round(value * 100) + '%');
-				break;		
+		case "login":
+			this.playerName.html(playerData.login);
+			break;
+		case "title":
+			this.playerTitle.html(playerData.title);
+			break;
+		case "progress":
+			this.playerProgressIndic.css("width", Math.round(playerData.progress * 100) + '%');
+			break;
+		default:
+			if(typeof(this.attributeList[i]) != "undefined"){
+				this.attributeList[i].html(playerData[i]).hide().show('pulsate');
+			}
 		}
 	}
 };

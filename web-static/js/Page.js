@@ -11,10 +11,11 @@ Page.prototype.append = function(content){
 		this.root.appendChild(content.get(0));
 	}
 };
-Page.prototype.setVisible = function(visible){	
-	if(visible) {
+Page.prototype.setVisible = function(visible){
+	//this.root.style.display = visible?"block":"none";
+	if(visible){
 		this.jRoot.show('fade');
-	} else {
+	}else{
 		this.jRoot.hide('fade');
 	}
 };
