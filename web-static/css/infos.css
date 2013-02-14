@@ -16,7 +16,45 @@
 		3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff;
 	text-align: center;
 	margin: 5px;
+	-webkit-animation-name : playerNameAnim;
+	-webkit-animation-duration : 1s;
+	-webkit-animation-iteration-count : infinite;
+	-webkit-animation-timing-function : ease-out;
 }
+
+@-webkit-keyframes playerNameAnim
+{
+	from
+	{
+		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+		3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff;
+		text-align: center;
+	}
+/* 	25% */
+/* 	{ */
+/* 		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, */
+/* 		3px 3px 20px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff; */
+/* 		text-align: left; */
+/* 	} */
+	50%
+	{
+		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+		10px 10px 20px #caffff, -10px -10px 20px #caffff, -10px 10px 20px #caffff, 10px -10px 20px #caffff;
+	}
+/* 	75% */
+/* 	{ */
+/* 		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, */
+/* 			3px 3px 20px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff; */
+/* 			text-align: right; */
+/* 	} */
+	to
+	{
+		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+			3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff;
+		text-align: center;
+	}
+}
+
 .player-title{
 	color: yellow;
 	font-family: gunship-italic;

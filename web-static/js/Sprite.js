@@ -32,6 +32,7 @@ Sprite.prototype.setPosition = function(x, y){
 	this.y = y;
 };
 Sprite.prototype.render = function(g, revertDirection, decalFrame){
+	
 	var frame = this.currentFrame;
 	if(decalFrame){
 		frame += this.frameCount - decalFrame;
@@ -40,6 +41,13 @@ Sprite.prototype.render = function(g, revertDirection, decalFrame){
 	if(this.invertAnim){
 		frame = this.frameCount - this.currentFrame - 1;
 	}
+	
+	g.scale(this.scale,this.scale);
+	
+	if(revertDirection)
+	{
+		g.scale(-1,1);
+	}
 	var col = frame % this.colCount;
 	var row = Math.floor(frame / this.colCount);
 	if(this.invert){
@@ -47,7 +55,7 @@ Sprite.prototype.render = function(g, revertDirection, decalFrame){
 		row = this.rowCount - row - 1;
 	}
 	
-	g.drawImage(this.img, col * this.width, row * this.height, this.width, this.height, this.x, this.y,this.width,this.height);
+	g.drawImage(this.img, col * this.width, row * this.height, this.width, this.height, -this.centerX, -this.centerY,this.width,this.height);
 	
 };
 Sprite.prototype.setCenter = function(x, y){

@@ -80,3 +80,22 @@ dt:after{
 dd{
 	float: left;
 }
+
+#menubar
+{
+	position : absolute;
+	top : 5px;
+	left : 5px;
+	width : 150px;
+	height : 20px;
+	
+	-webkit-transition : -webkit-transform 0.3s cubic-bezier(0,0.45,0.2,0.3,1);
+	-webkit-transform-origin : bottom left;
+	-webkit-transform : translate(3px,-20px) rotate(90deg) ;
+}
+
+.ui-button:hover
+{
+	z-index : 1;
+	-webkit-transform : scale(1.5);
+}

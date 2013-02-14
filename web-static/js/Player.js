@@ -65,6 +65,8 @@ Player.prototype.update = function(deltaTime){
 };
 Player.prototype.render = function(g){
 	Character.prototype.render.call(this, g);
+	var oldx = this.x;
+	var oldy = this.y;
 };
 Player.prototype.setPosition = function(x, y){
 	var lastY = this.y;

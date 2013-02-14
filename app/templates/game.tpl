@@ -5,6 +5,7 @@ include 'common-header.tpl';
 <link rel="stylesheet" type="text/css" href="/cours-web-static/css/scene.css"/>
 <link rel="stylesheet" type="text/css" href="/cours-web-static/css/gui.css"/>
 <link rel="stylesheet" type="text/css" href="/cours-web-static/css/infos.css"/>
+<script type="text/javascript" src="/cours-web-static/js/Vendor/soundmanager2-jsmin.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/Page.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/Sprite.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/InfoPage.js"></script>
@@ -23,7 +24,7 @@ echo 'var userData = '.$_SESSION['user']->toJSON().';';
 ?>
 </script>
 </head>
-<body onload="start()">
+<body>
 <div id="screen">
 	<canvas width="1024" height="600" id="canvas"></canvas>
 	<div id="gui"></div>

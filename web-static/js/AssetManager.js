@@ -1,7 +1,9 @@
 var AssetManager = function(){
 	this.images = {};
+	this.sounds = {};
 	this.imagesError = {};
 	this.imagesToLoad = {};
+	this.soundsToLoad = {};
 	this.loadingStarted = false;
 };
 AssetManager.prototype.loadImage = function(url, id){
@@ -30,10 +32,44 @@ AssetManager.prototype.loadImage = function(url, id){
 	return img;
 };
 
+AssetManager.prototype.loadSound = function(url, id){
+	var _this = this;
+	if(!id){
+		id = url;
+	}
+	this.soundsToLoad[id] = url;
+	var sound = soundManager.createSound({
+	id: id,
+		url: url,
+		autoLoad: true,
+		autoPlay: false,
+		onload: function() {
+			delete _this.soundsToLoad[id];
+			_this.assetLoaded();
+		},
+		volume: 100
+	});
+	sound.playLoop = function(){
+		this.play({			
+			onfinish: function() {
+				if(!this._play || user.data.soundEnabled){
+					this.playLoop();
+				}
+			}
+		});
+	};
+	this.sounds[id] = sound;
+	return this.sounds[id];
+};
+
 AssetManager.prototype.assetLoaded = function(){
 	this.totalAssetLoaded++;
 	this.loadingTime = Date.now() - this.loadingStartTime;
 	this.loadingEndTime = Date.now();
+	
+	if(typeof(this.callback) =='function' && this.isDoneLoading())
+		this.callback();
+		
 };
 var k = 0.2;
 AssetManager.prototype.renderLoadingProgress = function(g){
@@ -77,7 +113,9 @@ AssetManager.prototype.isDoneLoading = function(){
 	return this.totalAssetCount == this.totalAssetLoaded;
 };
 
-AssetManager.prototype.startLoading = function(loadingList){
+AssetManager.prototype.startLoading = function(loadingList, soundLoadingList, callback){
+	
+	this.callback = callback;
 	this.loadingStartTime = Date.now();
 	
 	this.totalAssetLoaded = 0;
@@ -85,10 +123,16 @@ AssetManager.prototype.startLoading = function(loadingList){
 	for(var i in loadingList){
 		this.totalAssetCount++;
 	}
+	for(var i in soundLoadingList){
+		this.totalAssetCount++;
+	}
 	this.loadingStarted = true;
 	this.isFightLoading = false;
 	for(var i in loadingList){
 		this.loadImage(loadingList[i], i);
+	}
+	for(var i in soundLoadingList){
+		this.loadSound(soundLoadingList[i], i);
 	}
 };
 AssetManager.prototype.getLoadingProgress = function(){
@@ -101,4 +145,7 @@ AssetManager.prototype.getLoadingProgress = function(){
 
 AssetManager.prototype.getImage = function(id){
 	return this.images[id];
+};
+AssetManager.prototype.getSound = function(id){
+	return this.sounds[id];
 };

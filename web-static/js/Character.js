@@ -30,10 +30,12 @@ Character.prototype.addPositionListener = function(listener){
 	this.positionListenerList.push(listener);
 };
 Character.prototype.render = function(g){
-
+	g.save();
+	g.translate(this.x, this.y);
 	if(this.currentSprite){
 		this.currentSprite.render(g, this.revertDirection);
 	}
+	g.restore();
 };
 Character.prototype.setPosition = function(x, y){
 	this.x = x;
