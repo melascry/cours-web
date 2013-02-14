@@ -103,7 +103,7 @@ Player.prototype.onKeyDown = function(k){
 			}
 			if(killCount > 0){
 				camera.shake(3);
-				$.coursWeb.api('mobKill', {killCount: killCount}, function(data){
+				$.coursWeb.api(dataStore.cst.ACTION_TYPE.MOB_KILL, {killCount: killCount}, function(data){
 					infoPage.refreshData(data);
 				});
 			}
