@@ -8,6 +8,9 @@ var InfoPage = function(){
 	this.playerName = $("<div>").addClass("player-name").append("nom");
 	this.append(this.playerName);
 	
+	this.playerPicture = $("<img>").css('float','left').css('position','absolute').css('left','20px');
+	this.append(this.playerPicture);
+	
 	this.playerTitle = $("<div>").addClass("player-title").append("title");
 	this.append(this.playerTitle);
 
@@ -37,6 +40,9 @@ InfoPage.prototype.refreshData = function(playerData){
 			break;
 		case "progress":
 			this.playerProgressIndic.css("width", Math.round(playerData.progress * 100) + '%');
+			break;
+		case "fbId":
+			this.playerPicture.attr("src","https://graph.facebook.com/" + playerData.fbId + "/picture?type=square");
 			break;
 		default:
 			if(typeof(this.attributeList[i]) != "undefined"){

@@ -4,6 +4,7 @@ namespace coursWeb;
 class User{
 	
 	private $id;
+	private $fbId;
 	private $login;
 	private $xp = 0;
 	private $hp = 0;
@@ -11,17 +12,19 @@ class User{
 	
 	public $publicData = "ok";
 	
-	private function __construct($id, $login, $xp, $hp, $power){
+	private function __construct($id, $login, $xp, $hp, $power,$fbId=false){
 		$this->id = (int)$id;
 		$this->login = $login;
 		$this->xp = (int)$xp;
 		$this->hp = (int)$hp;
 		$this->power = (int)$power;
+		$this->fbId = $fbId;
 	}
 	
 	public function toJSON(){
 		return json_encode(array(
 			'id' => $this->id,
+			'fbId' => $this->fbId,
 			'login' => $this->login,
 			'xp' => $this->xp,
 			'hp' => $this->hp,
@@ -87,5 +90,27 @@ class User{
 			return true;
 		}
 		return false;
+	}
+	
+
+	public static function fbLogin($fbId){
+		$query = App::getDB()->prepare('SELECT * FROM user WHERE fbId=? LIMIT 1');
+		if($query->execute(array($fbId))){
+			$res = $query->fetch();
+			if($res){
+				$_SESSION['user'] = new User($res->id, $res->login, $res->xp, $res->hp, $res->power, $res->fbId);
+			}
+		}
+		if(!isset($_SESSION['user'])){
+			$userProfile = App::getFbApi()->api('/me');
+			$query = App::getDB()->prepare('INSERT INTO user (login,fbId) VALUES (?,?)');
+			if($query->execute(array($userProfile['first_name'], $fbId))){
+				return self::fbLogin($fbId);
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
 	}
 }
