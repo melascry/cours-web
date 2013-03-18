@@ -100,8 +100,10 @@ Game.prototype.killMob = function(mob){
 };
 Game.prototype.mainLoop = function(){
 	var now = Date.now();
+	
 	var globalTimeDelta = now - this.globalTime;
 	var localTimeDelta = Math.min(50, globalTimeDelta);
+	
 	this.localTime += localTimeDelta;
 	this.globalTime = now;
 	
